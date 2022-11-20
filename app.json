@@ -18,8 +18,8 @@
       "**/*"
     ],
     "ios": {
-      "bundleIdentifier": "com.returndaniels.epistemic", 
-      "buildNumber": "1.0.0" ,
+      "bundleIdentifier": "com.returndaniels.epistemic",
+      "buildNumber": "1.0.0",
       "supportsTablet": true
     },
     "android": {
@@ -32,6 +32,11 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "5607eab5-e4b5-4821-9d55-08e6c266c844"
+      }
     }
   }
 }

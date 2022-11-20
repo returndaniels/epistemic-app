@@ -14,16 +14,24 @@ npm install
 expo start
 ```
 
+## Gerando uma build
+
+Para gerar a buil é necessário primeiro instalar o eas-cli
+
+```
+npm install -g eas-cli
+```
+
 #### Para gerar o APK para Android:
 
 ```bash
-expo build:android
+eas build -p android
 ```
 
 #### Para gerar o IPA para iOS:
 
 ```bash
-expo build:ios
+eas build -p ios
 ```
 
 ## Dependências
