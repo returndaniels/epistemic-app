@@ -11,12 +11,19 @@ import {
 } from "react-native";
 import { signIn } from "../../services/user";
 import styles from "./LoginForm.component.style";
-import { validateEmail } from "../../utils/validate";
 
 function LoginForm({ navigation, onLoading }) {
   const [email, onChangeEmail] = useState(null);
   const [password, onChangePassword] = useState(null);
   const [error, onChangeError] = useState(null);
+
+  const validateEmail = (text) => {
+    let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+    if (reg.test(text) === false) {
+      onChangeEmail(text);
+      return false;
+    } else onChangeEmail(text);
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -34,12 +41,7 @@ function LoginForm({ navigation, onLoading }) {
         <TextInput
           style={styles.input}
           placeholder="E-mail"
-          onChangeText={onChangeEmail}
-          onEndEditing={() => {
-            if (!validateEmail(email))
-              onChangeError("Insira um endereço de email válido");
-            else onChangeError(null);
-          }}
+          onChangeText={validateEmail}
           value={email}
         />
       </View>

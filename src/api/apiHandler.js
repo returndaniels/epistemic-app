@@ -16,7 +16,7 @@ async function create({ resource, body }) {
     data = await response.json();
     if (data?.success === false) throw data;
   } catch (e) {
-    data = null;
+    throw e;
   }
 
   if (!response.ok) {

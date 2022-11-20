@@ -1,9 +1,9 @@
 import { create } from "./apiHandler";
 
-async function registerUser(credentials) {
+async function registerUser(body) {
   const response = await create({
     resource: "/user/register",
-    body: credentials,
+    body,
   });
 
   return response;

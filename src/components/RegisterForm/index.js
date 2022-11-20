@@ -9,11 +9,13 @@ import {
   TextInput,
   Pressable,
 } from "react-native";
-import { signIn } from "../../services/user";
-import styles from "./LoginForm.component.style";
+import { register } from "../../services/user";
+import styles from "./RegisterForm.component.style";
 import { validateEmail } from "../../utils/validate";
 
-function LoginForm({ navigation, onLoading }) {
+function RegisterForm({ navigation, onLoading }) {
+  const [username, onChangeUsername] = useState(null);
+  const [name, onChangeName] = useState(null);
   const [email, onChangeEmail] = useState(null);
   const [password, onChangePassword] = useState(null);
   const [error, onChangeError] = useState(null);
@@ -24,6 +26,34 @@ function LoginForm({ navigation, onLoading }) {
         style={styles.logo}
         source={require("../../../assets/epistemic-logo.png")}
       />
+      <View style={styles.inputContainer}>
+        <Octicons
+          style={{ marginLeft: 7 }}
+          name="person"
+          size={20}
+          color="#999"
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Nome e sobrenome"
+          onChangeText={onChangeName}
+          value={name}
+        />
+      </View>
+      <View style={styles.inputContainer}>
+        <Octicons
+          style={{ marginLeft: 7 }}
+          name="person"
+          size={20}
+          color="#999"
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Nome de usuário"
+          onChangeText={onChangeUsername}
+          value={username}
+        />
+      </View>
       <View style={styles.inputContainer}>
         <Octicons
           style={{ marginLeft: 7 }}
@@ -56,37 +86,34 @@ function LoginForm({ navigation, onLoading }) {
       <Pressable
         style={styles.buttonText}
         onPress={() => {
-          if (!email || !password) {
-            onChangeError("Informe email e senha");
+          if (!name || !username || !email || !password) {
+            onChangeError("Preencha todos os campos");
             return;
           }
           onLoading(true);
-          signIn(
-            { email, password },
+          register(
+            { name, username, email, password },
             () => {
               onLoading(false);
-              navigation.navigate("Home");
+              navigation.navigate("Login");
             },
             (err) => {
               onLoading(false);
-              onChangeError(err ? err.message : "Falha na autenticação");
+              onChangeError(err ? err.message : "Falha ao criar conta");
               onChangePassword("");
             }
           );
         }}
       >
-        <Text style={styles.btnText}>ENTRAR</Text>
+        <Text style={styles.btnText}>CADASTRAR</Text>
       </Pressable>
       {error && <Text style={styles.error}>{error}</Text>}
-      <Pressable onPress={() => navigation.navigate("Forgot")}>
-        <Text style={styles.text}>Esqueceu sua senha? Clique Aqui</Text>
-      </Pressable>
       <View style={styles.hr} />
-      <Pressable onPress={() => navigation.navigate("Register")}>
-        <Text style={styles.text}>Não tem um conta? Cadastre-se</Text>
+      <Pressable onPress={() => navigation.navigate("Login")}>
+        <Text style={styles.text}>Já possui conta? Clique Aqui</Text>
       </Pressable>
     </SafeAreaView>
   );
 }
 
-export default LoginForm;
+export default RegisterForm;
