@@ -28,7 +28,7 @@ function LoginForm({ navigation, onLoading }) {
   const onSucessLogin = (data) => {
     onLoading(false);
     onChangeError(null);
-    signInSucceeded(data.user);
+    dispatch(signInSucceeded(data.user));
     navigation.navigate("Home");
   };
 

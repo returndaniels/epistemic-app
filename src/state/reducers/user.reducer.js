@@ -17,7 +17,7 @@ const userReducer = (state = initialState, action) => {
     case SIGNIN_SUCCEEDED:
       return {
         ...state,
-        name: action.payload.user.name,
+        name: action.payload.user.fullname,
         username: action.payload.user.username,
         email: action.payload.user.email,
       };

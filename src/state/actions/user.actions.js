@@ -1,6 +1,7 @@
 import { validateEmail } from "../../utils/validate";
 
 export const SET_USER_EMAIL = "SET_USER_EMAIL";
+export const SIGNIN_SUCCEEDED = "SIGNIN_SUCCEEDED";
 
 export function setUserEmailSucceeded(email) {
   return {
