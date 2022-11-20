@@ -12,21 +12,20 @@ import { forgot } from "../../services/user";
 import styles from "./ForgotForm.component.style";
 import { validateEmail } from "../../utils/validate";
 
-function ForgotForm({ navigation, onLoading }) {
-  const [email, onChangeEmail] = useState(null);
+function ForgotForm({ navigation, emailDefault, onLoading, onSucess }) {
+  const [email, onChangeEmail] = useState(emailDefault ?? null);
   const [error, onChangeError] = useState(null);
 
   const onSucessForgot = (data) => {
     onLoading(false);
     onChangeError(null);
-    signInSucceeded(data.user);
-    navigation.navigate("Home");
+    onChangeEmail(null);
+    onSucess(data);
   };
 
   const onFailedForgot = (err) => {
     onLoading(false);
-    onChangeError(err ? err.message : "Falha na autenticação");
-    onChangePassword("");
+    onChangeError(err ? err.message : "Não foi possível localizar o usuário");
   };
 
   return (

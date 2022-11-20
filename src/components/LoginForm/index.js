@@ -56,10 +56,12 @@ function LoginForm({ navigation, onLoading }) {
           placeholder="E-mail"
           onChangeText={onChangeEmail}
           onEndEditing={() => {
-            if (!validateEmail(email)) {
+            if (!validateEmail(email))
               onChangeError("Insira um endereço de email válido");
+            else {
+              onChangeError(null);
               dispatch(setUserEmailSucceeded(email));
-            } else onChangeError(null);
+            }
           }}
           value={email}
         />

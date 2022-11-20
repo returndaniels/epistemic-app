@@ -1,6 +1,7 @@
 import { MD5 } from "react-native-crypto-js";
 import { signInUser } from "../api/auth";
 import { registerUser } from "../api/register";
+import { recoverPassword } from "../api/password";
 import storage from "../utils/localstorege";
 
 const signIn = async (
@@ -59,9 +60,21 @@ const register = async (
 };
 
 const forgot = async (
-  { email },
+  body,
   onSucess = () => null,
   errorCallback = () => null
-) => {};
+) => {
+  try {
+    const data = await recoverPassword(body);
+    if (!data || data?.success === false) {
+      errorCallback(data?.message);
+      return;
+    }
+
+    onSucess(data);
+  } catch (error) {
+    errorCallback(error);
+  }
+};
 
 export { signIn, register, forgot };

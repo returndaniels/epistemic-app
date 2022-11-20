@@ -53,7 +53,7 @@ export default StyleSheet.create({
   error: {
     textAlign: "center",
     color: "rgb(240,0,0)",
-    maxHeight: 20,
+    maxHeight: 40,
   },
   hr: {
     backgroundColor: "rgb(198,135,213)",

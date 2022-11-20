@@ -20,6 +20,16 @@ function RegisterForm({ navigation, onLoading }) {
   const [password, onChangePassword] = useState(null);
   const [error, onChangeError] = useState(null);
 
+  const onSucessRegister = () => {
+    onLoading(false);
+    navigation.navigate("Login");
+  };
+  const onFailedRegister = (err) => {
+    onLoading(false);
+    onChangeError(err ? err.message : "Falha ao criar conta");
+    onChangePassword("");
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <Image
@@ -93,15 +103,8 @@ function RegisterForm({ navigation, onLoading }) {
           onLoading(true);
           register(
             { name, username, email, password },
-            () => {
-              onLoading(false);
-              navigation.navigate("Login");
-            },
-            (err) => {
-              onLoading(false);
-              onChangeError(err ? err.message : "Falha ao criar conta");
-              onChangePassword("");
-            }
+            onSucessRegister,
+            onFailedRegister
           );
         }}
       >
