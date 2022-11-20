@@ -22,7 +22,7 @@ const signIn = async (
       data: data.user,
       expires: 1000 * 3600,
     });
-    onSucess();
+    onSucess(data);
   } catch (error) {
     errorCallback(error);
   }
@@ -58,4 +58,10 @@ const register = async (
   }
 };
 
-export { signIn, register };
+const forgot = async (
+  { email },
+  onSucess = () => null,
+  errorCallback = () => null
+) => {};
+
+export { signIn, register, forgot };

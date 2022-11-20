@@ -1,44 +1,47 @@
 import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-
+import { Provider } from "react-redux";
+import { initStore } from "./src/state/store";
 import LoginScreen from "./src/features/Login";
 import RegisterScreen from "./src/features/Register";
 import HomeScreen from "./src/features/Home";
-import Terms from "./src/features/Terms";
+import ForgotScreen from "./src/features/Forgot";
+import TermsScreen from "./src/features/Terms";
 
 const Stack = createNativeStackNavigator();
+const store = initStore();
 
 function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Login">
-          {(props) => <LoginScreen {...props} />}
-        </Stack.Screen>
-        <Stack.Screen
-          name="Home"
-          options={{
-            gestureEnabled: false,
-            headerShown: true,
-            headerLeft: () => null,
-          }}
-        >
-          {(props) => <HomeScreen {...props} />}
-        </Stack.Screen>
-        <Stack.Screen name="Forgot">
-          {(props) => {
-            <HomeScreen {...props} />;
-          }}
-        </Stack.Screen>
-        <Stack.Screen name="Register">
-          {(props) => <RegisterScreen {...props} />}
-        </Stack.Screen>
-        <Stack.Screen name="Terms">
-          {(props) => <Terms {...props} />}
-        </Stack.Screen>
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen name="Login">
+            {(props) => <LoginScreen {...props} />}
+          </Stack.Screen>
+          <Stack.Screen
+            name="Home"
+            options={{
+              gestureEnabled: false,
+              headerShown: true,
+              headerLeft: () => null,
+            }}
+          >
+            {(props) => <HomeScreen {...props} />}
+          </Stack.Screen>
+          <Stack.Screen name="Forgot">
+            {(props) => <ForgotScreen {...props} />}
+          </Stack.Screen>
+          <Stack.Screen name="Register">
+            {(props) => <RegisterScreen {...props} />}
+          </Stack.Screen>
+          <Stack.Screen name="Terms">
+            {(props) => <TermsScreen {...props} />}
+          </Stack.Screen>
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 }
 

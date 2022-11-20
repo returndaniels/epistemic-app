@@ -1,7 +1,5 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
 import Octicons from "react-native-vector-icons/Octicons";
-import Feather from "react-native-vector-icons/Feather";
 import {
   SafeAreaView,
   View,
@@ -10,29 +8,22 @@ import {
   TextInput,
   Pressable,
 } from "react-native";
-import { signIn } from "../../services/user";
-import styles from "./LoginForm.component.style";
+import { forgot } from "../../services/user";
+import styles from "./ForgotForm.component.style";
 import { validateEmail } from "../../utils/validate";
-import {
-  setUserEmailSucceeded,
-  signInSucceeded,
-} from "../../state/actions/user.actions";
 
-function LoginForm({ navigation, onLoading }) {
-  const dispatch = useDispatch();
-
+function ForgotForm({ navigation, onLoading }) {
   const [email, onChangeEmail] = useState(null);
-  const [password, onChangePassword] = useState(null);
   const [error, onChangeError] = useState(null);
 
-  const onSucessLogin = (data) => {
+  const onSucessForgot = (data) => {
     onLoading(false);
     onChangeError(null);
     signInSucceeded(data.user);
     navigation.navigate("Home");
   };
 
-  const onFailedLogin = (err) => {
+  const onFailedForgot = (err) => {
     onLoading(false);
     onChangeError(err ? err.message : "Falha na autenticação");
     onChangePassword("");
@@ -58,38 +49,27 @@ function LoginForm({ navigation, onLoading }) {
           onEndEditing={() => {
             if (!validateEmail(email)) {
               onChangeError("Insira um endereço de email válido");
-              dispatch(setUserEmailSucceeded(email));
             } else onChangeError(null);
           }}
           value={email}
         />
       </View>
-      <View style={styles.inputContainer}>
-        <Feather style={{ marginLeft: 5 }} name="lock" size={20} color="#999" />
-        <TextInput
-          style={styles.input}
-          onChangeText={onChangePassword}
-          value={password}
-          placeholder="Senha"
-          secureTextEntry={true}
-        />
-      </View>
       <Pressable
         style={styles.buttonText}
         onPress={() => {
-          if (!email || !password) {
+          if (!email) {
             onChangeError("Informe email e senha");
             return;
           }
           onLoading(true);
-          signIn({ email, password }, onSucessLogin, onFailedLogin);
+          forgot({ email }, onSucessForgot, onFailedForgot);
         }}
       >
-        <Text style={styles.btnText}>ENTRAR</Text>
+        <Text style={styles.btnText}>Recuperar senha</Text>
       </Pressable>
       {error && <Text style={styles.error}>{error}</Text>}
-      <Pressable onPress={() => navigation.navigate("Forgot")}>
-        <Text style={styles.text}>Esqueceu sua senha? Clique Aqui</Text>
+      <Pressable onPress={() => navigation.navigate("Login")}>
+        <Text style={styles.text}>Voltar ao Login? Clique Aqui</Text>
       </Pressable>
       <View style={styles.hr} />
       <Pressable onPress={() => navigation.navigate("Register")}>
@@ -99,4 +79,4 @@ function LoginForm({ navigation, onLoading }) {
   );
 }
 
-export default LoginForm;
+export default ForgotForm;
