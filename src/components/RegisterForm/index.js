@@ -1,4 +1,3 @@
-import { useState } from "react";
 import Octicons from "react-native-vector-icons/Octicons";
 import Feather from "react-native-vector-icons/Feather";
 import {
@@ -9,26 +8,23 @@ import {
   TextInput,
   Pressable,
 } from "react-native";
-import { register } from "../../services/user";
+import useRegistarForm from "./useRegistarForm";
 import styles from "./RegisterForm.component.style";
-import { validateEmail } from "../../utils/validate";
 
 function RegisterForm({ navigation, onLoading }) {
-  const [username, onChangeUsername] = useState(null);
-  const [name, onChangeName] = useState(null);
-  const [email, onChangeEmail] = useState(null);
-  const [password, onChangePassword] = useState(null);
-  const [error, onChangeError] = useState(null);
-
-  const onSucessRegister = () => {
-    onLoading(false);
-    navigation.navigate("Login");
-  };
-  const onFailedRegister = (err) => {
-    onLoading(false);
-    onChangeError(err ? err.message : "Falha ao criar conta");
-    onChangePassword("");
-  };
+  const {
+    username,
+    name,
+    email,
+    password,
+    error,
+    onChangeUsername,
+    onChangeName,
+    onChangeEmail,
+    onChangePassword,
+    onBlurEmail,
+    onSubmit,
+  } = useRegistarForm(navigation, onLoading);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -75,11 +71,7 @@ function RegisterForm({ navigation, onLoading }) {
           style={styles.input}
           placeholder="E-mail"
           onChangeText={onChangeEmail}
-          onEndEditing={() => {
-            if (!validateEmail(email))
-              onChangeError("Insira um endereço de email válido");
-            else onChangeError(null);
-          }}
+          onEndEditing={onBlurEmail}
           value={email}
         />
       </View>
@@ -93,21 +85,7 @@ function RegisterForm({ navigation, onLoading }) {
           secureTextEntry={true}
         />
       </View>
-      <Pressable
-        style={styles.buttonText}
-        onPress={() => {
-          if (!name || !username || !email || !password) {
-            onChangeError("Preencha todos os campos");
-            return;
-          }
-          onLoading(true);
-          register(
-            { name, username, email, password },
-            onSucessRegister,
-            onFailedRegister
-          );
-        }}
-      >
+      <Pressable style={styles.buttonText} onPress={onSubmit}>
         <Text style={styles.btnText}>CADASTRAR</Text>
       </Pressable>
       {error && <Text style={styles.error}>{error}</Text>}

@@ -17,17 +17,10 @@ function App() {
     <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator>
-          <Stack.Screen name="Login">
+          <Stack.Screen name="Login" options={{ headerShown: false }}>
             {(props) => <LoginScreen {...props} />}
           </Stack.Screen>
-          <Stack.Screen
-            name="Home"
-            options={{
-              gestureEnabled: false,
-              headerShown: true,
-              headerLeft: () => null,
-            }}
-          >
+          <Stack.Screen name="Home" options={{ headerShown: false }}>
             {(props) => <HomeScreen {...props} />}
           </Stack.Screen>
           <Stack.Screen name="Forgot">

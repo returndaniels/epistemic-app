@@ -1,7 +1,3 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import Octicons from "react-native-vector-icons/Octicons";
-import Feather from "react-native-vector-icons/Feather";
 import {
   SafeAreaView,
   View,
@@ -10,33 +6,21 @@ import {
   TextInput,
   Pressable,
 } from "react-native";
-import { signIn } from "../../services/user";
+import Octicons from "react-native-vector-icons/Octicons";
+import Feather from "react-native-vector-icons/Feather";
 import styles from "./LoginForm.component.style";
-import { validateEmail } from "../../utils/validate";
-import {
-  setUserEmailSucceeded,
-  signInSucceeded,
-} from "../../state/actions/user.actions";
+import useLoginForm from "./useLoginForm";
 
 function LoginForm({ navigation, onLoading }) {
-  const dispatch = useDispatch();
-
-  const [email, onChangeEmail] = useState(null);
-  const [password, onChangePassword] = useState(null);
-  const [error, onChangeError] = useState(null);
-
-  const onSucessLogin = (data) => {
-    onLoading(false);
-    onChangeError(null);
-    dispatch(signInSucceeded(data.user));
-    navigation.navigate("Home");
-  };
-
-  const onFailedLogin = (err) => {
-    onLoading(false);
-    onChangeError(err ? err.message : "Falha na autenticação");
-    onChangePassword("");
-  };
+  const {
+    email,
+    password,
+    error,
+    onChangeEmail,
+    onBlurEmail,
+    onChangePassword,
+    onSubmit,
+  } = useLoginForm(navigation, onLoading);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -55,14 +39,7 @@ function LoginForm({ navigation, onLoading }) {
           style={styles.input}
           placeholder="E-mail"
           onChangeText={onChangeEmail}
-          onEndEditing={() => {
-            if (!validateEmail(email))
-              onChangeError("Insira um endereço de email válido");
-            else {
-              onChangeError(null);
-              dispatch(setUserEmailSucceeded(email));
-            }
-          }}
+          onEndEditing={onBlurEmail}
           value={email}
         />
       </View>
@@ -76,17 +53,7 @@ function LoginForm({ navigation, onLoading }) {
           secureTextEntry={true}
         />
       </View>
-      <Pressable
-        style={styles.buttonText}
-        onPress={() => {
-          if (!email || !password) {
-            onChangeError("Informe email e senha");
-            return;
-          }
-          onLoading(true);
-          signIn({ email, password }, onSucessLogin, onFailedLogin);
-        }}
-      >
+      <Pressable style={styles.buttonText} onPress={onSubmit}>
         <Text style={styles.btnText}>ENTRAR</Text>
       </Pressable>
       {error && <Text style={styles.error}>{error}</Text>}

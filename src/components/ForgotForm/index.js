@@ -1,5 +1,3 @@
-import { useState } from "react";
-import Octicons from "react-native-vector-icons/Octicons";
 import {
   SafeAreaView,
   View,
@@ -8,25 +6,16 @@ import {
   TextInput,
   Pressable,
 } from "react-native";
-import { forgot } from "../../services/user";
+import Octicons from "react-native-vector-icons/Octicons";
+import useForgotForm from "./useForgotForm";
 import styles from "./ForgotForm.component.style";
-import { validateEmail } from "../../utils/validate";
 
 function ForgotForm({ navigation, emailDefault, onLoading, onSucess }) {
-  const [email, onChangeEmail] = useState(emailDefault ?? null);
-  const [error, onChangeError] = useState(null);
-
-  const onSucessForgot = (data) => {
-    onLoading(false);
-    onChangeError(null);
-    onChangeEmail(null);
-    onSucess(data);
-  };
-
-  const onFailedForgot = (err) => {
-    onLoading(false);
-    onChangeError(err ? err.message : "Não foi possível localizar o usuário");
-  };
+  const { email, error, onChangeEmail, onBlurEmail, onSubmit } = useForgotForm(
+    emailDefault,
+    onLoading,
+    onSucess
+  );
 
   return (
     <SafeAreaView style={styles.container}>
@@ -45,25 +34,11 @@ function ForgotForm({ navigation, emailDefault, onLoading, onSucess }) {
           style={styles.input}
           placeholder="E-mail"
           onChangeText={onChangeEmail}
-          onEndEditing={() => {
-            if (!validateEmail(email)) {
-              onChangeError("Insira um endereço de email válido");
-            } else onChangeError(null);
-          }}
+          onEndEditing={onBlurEmail}
           value={email}
         />
       </View>
-      <Pressable
-        style={styles.buttonText}
-        onPress={() => {
-          if (!email) {
-            onChangeError("Informe email e senha");
-            return;
-          }
-          onLoading(true);
-          forgot({ email }, onSucessForgot, onFailedForgot);
-        }}
-      >
+      <Pressable style={styles.buttonText} onPress={onSubmit}>
         <Text style={styles.btnText}>Recuperar senha</Text>
       </Pressable>
       {error && <Text style={styles.error}>{error}</Text>}

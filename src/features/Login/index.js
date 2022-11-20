@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { View, Text, Pressable, Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import LoginForm from "../../components/LoginForm";
@@ -6,6 +7,12 @@ import styles from "./Login.component.style";
 
 function Login({ navigation }) {
   const [isLoading, setLoading] = useState(false);
+  const user = useSelector((state) => state.user);
+
+  useEffect(() => {
+    if (user.email & user.username & user.name) navigation.navigate("Home");
+  }, []);
+
   return (
     <LinearGradient
       colors={["rgb(120,70,179)", "rgb(168,70,172)"]}
