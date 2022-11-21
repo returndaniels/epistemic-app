@@ -22,10 +22,16 @@ Para gerar a buil é necessário primeiro instalar o eas-cli
 npm install -g eas-cli
 ```
 
-#### Para gerar o APK para Android:
+#### Para gerar o APK/AAB para Android:
 
 ```bash
 eas build -p android
+```
+
+Se quiser gerar um arquivo APK execute
+
+```bash
+eas build -p android --profile preview
 ```
 
 #### Para gerar o IPA para iOS:

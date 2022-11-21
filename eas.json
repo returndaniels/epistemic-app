@@ -3,14 +3,19 @@
     "version": ">= 2.7.1"
   },
   "build": {
+    "production": { "node": "16.16.0"},
     "development": {
+      "extends": "production",
       "developmentClient": true,
       "distribution": "internal"
     },
     "preview": {
-      "distribution": "internal"
-    },
-    "production": {}
+      "extends": "production",
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      }
+    }
   },
   "submit": {
     "production": {}
