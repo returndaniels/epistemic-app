@@ -22,7 +22,7 @@ Para gerar a buil é necessário primeiro instalar o eas-cli
 npm install -g eas-cli
 ```
 
-#### Para gerar o APK/AAB para Android:
+### Para gerar o APK/AAB para Android:
 
 ```bash
 eas build -p android
@@ -34,7 +34,14 @@ Se quiser gerar um arquivo APK execute
 eas build -p android --profile preview
 ```
 
-#### Para gerar o IPA para iOS:
+ATENÇÃO: Certifique-se de que as váriavéis de ambiente `JAVA_HOME` e `ANDROID_SDK` estão definidadas corretamente, como no exemplo abaixo
+
+```bash
+export ANDROID_SDK="C:\Users\<user_name>\AppData\Local\Android\sdk"
+export JAVA_HOME="C:\Program Files\Android\Android Studio\jre"
+```
+
+### Para gerar o IPA para iOS:
 
 ```bash
 eas build -p ios
