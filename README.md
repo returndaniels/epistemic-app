@@ -41,6 +41,60 @@ export ANDROID_SDK="C:\Users\<user_name>\AppData\Local\Android\sdk"
 export JAVA_HOME="C:\Program Files\Android\Android Studio\jre"
 ```
 
+### Gerando uma release APK com `react-native-cli`
+
+Use o keytool uma chave de assinatura gerada por Java, que é um arquivo keystore usado para gerar um binário executável React Native para Android. (keytool pode ser encontrado em `<java_path>/bin/keytool`)
+
+```
+keytool -genkey -v -keystore <your_key_name>.keystore -alias <your_key_alias> -keyalg RSA -keysize 2048 -validity 10000
+```
+
+Como resultado obterá o arquivo `<your_key_name>.keystore ` válido por 10.000 dias. Mova esse arquivo para a pasta `android/app` do seu projeto.
+
+Configure o arquivo `android\app\build.gradle`
+
+```
+android {
+....
+  signingConfigs {
+    release {
+      storeFile file('your_key_name.keystore')
+      storePassword 'your_key_store_password'
+      keyAlias 'your_key_alias'
+      keyPassword 'your_key_file_alias_password'
+    }
+  }
+  buildTypes {
+    release {
+      ....
+      signingConfig signingConfigs.release
+    }
+  }
+}
+```
+
+Na raíz do projeto execute o seguinte comando: (certifiqui-se que exista a pasta `android/app/src/main/assets`)
+
+```
+react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/
+```
+
+Acesse a pasta android com:
+
+```
+cd android
+```
+
+E execute o seguinte comando
+
+```bash
+gradlew assembleRelease # para Windows
+./gradlew assembleRelease # Para Linux ou Mac
+
+```
+
+Como resultado, o processo de criação do APK é concluído . Você pode encontrar o APK gerado em `android/app/build/outputs/apk/app-release.apk`
+
 ### Para gerar o IPA para iOS:
 
 ```bash

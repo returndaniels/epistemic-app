@@ -1,5 +1,8 @@
 import { Text } from "react-native";
-import moment from "moment";
+import "moment";
+import "moment/locale/pt-br";
+import moment from "moment-timezone";
+
 import styles from "./Moment.component.style";
 
 function Moment() {
